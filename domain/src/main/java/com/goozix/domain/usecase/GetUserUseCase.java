@@ -19,9 +19,9 @@ public class GetUserUseCase extends BaseUseCase {
         this.userRepository = userRepository;
     }
 
-    public Observable<User> getUser(String user) {
+    public Observable<User> getUser(String login) {
         return userRepository
-                .getUser(user)
+                .getUser(login)
                 .subscribeOn(executionThread)
                 .observeOn(postExecutionThread);
     }

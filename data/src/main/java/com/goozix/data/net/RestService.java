@@ -57,9 +57,9 @@ public class RestService {
                 .compose(errorParserTransformer.<List<UserResponse>, Throwable>parseHttpError());
     }
 
-    public Observable<UserResponse> getCountry(String alpha3Code) {
+    public Observable<UserResponse> getUser(String login) {
         return restApi
-                .getUser(alpha3Code)
+                .getUser(login)
                 .compose(errorParserTransformer.<UserResponse, Throwable>parseHttpError());
     }
 }

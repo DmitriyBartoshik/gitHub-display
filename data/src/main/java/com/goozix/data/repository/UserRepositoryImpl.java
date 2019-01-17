@@ -31,19 +31,25 @@ public class UserRepositoryImpl implements UserRepository {
                     @Override
                     public List<User> apply(List<UserResponse> userResponses) throws Exception {
 
-                        List<User> users=new ArrayList<>();
-                        for(UserResponse userResponse: userResponses){
-                            User user= ToDomainTransformer.getInstance().userTransformer(userResponse);
+                        List<User> users = new ArrayList<>();
+                        for (UserResponse userResponse : userResponses) {
+                            User user = ToDomainTransformer.getInstance().userTransformer(userResponse);
                             users.add(user);
                         }
                         return users;
                     }
-                })
-                ;
+                });
     }
 
     @Override
-    public Observable<User> getUser(String user) {
-        return null;
+    public Observable<User> getUser(String login) {
+        return restService
+                .getUser(login)
+                .map(new Function<UserResponse, User>() {
+                    @Override
+                    public User apply(UserResponse userResponse) throws Exception {
+                        return ToDomainTransformer.getInstance().userTransformer(userResponse);
+                    }
+                });
     }
 }

@@ -7,6 +7,7 @@ import com.goozix.domain.entity.User;
 import com.goozix.domain.usecase.GetListUserUseCase;
 import com.goozix.githubdisplay.app.App;
 import com.goozix.githubdisplay.presentation.base.BaseViewModel;
+import com.goozix.githubdisplay.presentation.base.recycler.ClickedItemModel;
 import com.goozix.githubdisplay.presentation.screen.list.item.user.UserListAdapter;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel
 
     public UserListViewModel() {
         getUserList();
+        adapterClickObserver();
     }
 
     public void getUserList() {
@@ -47,6 +49,31 @@ public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel
             @Override
             public void onError(Throwable e) {
                 Log.d("Error get userList", "Error get userList " + e.toString());
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    public void adapterClickObserver() {
+        adapter.observeItemClick().subscribe(new Observer<ClickedItemModel<DomainModel>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(ClickedItemModel<DomainModel> domainModelClickedItemModel) {
+                String login=((User) domainModelClickedItemModel.getEntity()).getLogin();
+                router.showSingleUser(login);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
             }
 
             @Override

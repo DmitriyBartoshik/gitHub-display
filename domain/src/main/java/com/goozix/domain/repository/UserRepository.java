@@ -9,6 +9,6 @@ import io.reactivex.Observable;
 public interface UserRepository {
     Observable<List<User>> getUserList();
 
-    Observable<User> getUser(String user);
+    Observable<User> getUser(String login);
 
 }
