@@ -14,4 +14,5 @@ public class UserListAdapter  extends BaseRecyclerViewAdapter<User, UserItemView
     public BaseItemViewHolder<User, UserItemViewModel, ?> onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         return UserItemViewHolder.create(parent, new UserItemViewModel());
     }
+
 }

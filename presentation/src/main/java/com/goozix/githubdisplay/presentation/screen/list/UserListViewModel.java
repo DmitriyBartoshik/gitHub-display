@@ -19,6 +19,8 @@ import io.reactivex.disposables.Disposable;
 
 public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel> {
     public UserListAdapter adapter = new UserListAdapter();
+    public int pageCount;
+    public int size=29;
 
     @Inject
     public GetListUserUseCase listUserUseCase;
@@ -31,19 +33,20 @@ public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel
     public UserListViewModel() {
         getUserList();
         adapterClickObserver();
+//        lastViewObserver();
     }
 
     public void getUserList() {
         listUserUseCase.getUserList().subscribe(new Observer<List<User>>() {
             @Override
             public void onSubscribe(Disposable d) {
-
             }
 
             @Override
             public void onNext(List<User> users) {
                 Log.d("User list", "size " + users.size());
                 adapter.setItems(users);
+                pageCount++;
             }
 
             @Override
@@ -67,8 +70,36 @@ public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel
 
             @Override
             public void onNext(ClickedItemModel<DomainModel> domainModelClickedItemModel) {
-                String login=((User) domainModelClickedItemModel.getEntity()).getLogin();
+                String login = ((User) domainModelClickedItemModel.getEntity()).getLogin();
                 router.showSingleUser(login);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    public void lastViewObserver() {
+        adapter.lastViewPositionObserver().subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.d("Observer", "+1 "+ integer);
+                if (integer==size){
+                    size=size+20;
+                    getUserList();
+                }
             }
 
             @Override

@@ -55,5 +55,8 @@ ext {
     //Network
     retrofitVersion = '2.4.0'
     okHttpVersion = '3.11.0'
+
+//    Paging
+    pagingVersion = '1.0.1'
 }
 

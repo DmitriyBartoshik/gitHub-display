@@ -2,6 +2,7 @@ package com.goozix.githubdisplay.presentation.base.recycler;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
 import com.goozix.domain.entity.DomainModel;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
 public abstract class BaseRecyclerViewAdapter<
         Entity extends DomainModel,
@@ -20,6 +22,7 @@ public abstract class BaseRecyclerViewAdapter<
     private List<Entity> items = new ArrayList<>();
     protected boolean isItemClickedEnabled = true;
     private PublishSubject<ClickedItemModel<DomainModel>> itemClickSubject = PublishSubject.create();
+    private PublishSubject<Integer> lastViewPosition=PublishSubject.create();
 
     @Override
     public void onBindViewHolder(@NonNull BaseItemViewHolder<Entity, VM, ?> holder, int position) {
@@ -37,8 +40,8 @@ public abstract class BaseRecyclerViewAdapter<
     }
 
 
-    public List<Entity> getItems(){
-        return  items;
+    public List<Entity> getItems() {
+        return items;
     }
 
 //    public Entity getItem
@@ -49,31 +52,31 @@ public abstract class BaseRecyclerViewAdapter<
         notifyItemRemoved(index);
     }
 
-    public void editItem(Entity entity){
+    public void editItem(Entity entity) {
         int index = this.items.indexOf(entity);
         this.items.set(index, entity);
         notifyItemChanged(index);
     }
 
-    public void moveItem(int fromPosition, int toPosition){
+    public void moveItem(int fromPosition, int toPosition) {
         Entity item = items.remove(fromPosition);
-        if(toPosition > fromPosition)
+        if (toPosition > fromPosition)
             toPosition--;
         items.add(toPosition, item);
         notifyItemMoved(fromPosition, toPosition);
     }
 
-    public void addItem(Entity entity){
+    public void addItem(Entity entity) {
         items.add(entity);
         notifyItemInserted(items.size() - 1);
     }
 
-    public void addItems(List<Entity> items){
+    public void addItems(List<Entity> items) {
         this.items.addAll(items);
         notifyItemRangeInserted(items.size() - 1, items.size());
     }
 
-    public void clear(){
+    public void clear() {
         this.items.clear();
         notifyDataSetChanged();
     }
@@ -81,7 +84,7 @@ public abstract class BaseRecyclerViewAdapter<
     @Override
     public void onViewAttachedToWindow(@NonNull final BaseItemViewHolder<Entity, VM, ?> holder) {
         super.onViewAttachedToWindow(holder);
-        if(isItemClickedEnabled){
+        if (isItemClickedEnabled) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -90,7 +93,9 @@ public abstract class BaseRecyclerViewAdapter<
                     holder.getViewModel().onItemClick();
                 }
             });
+            Log.d("poz", "position " + holder.getAdapterPosition());
         }
+        lastViewPosition.onNext(holder.getAdapterPosition());
     }
 
     @Override
@@ -101,7 +106,11 @@ public abstract class BaseRecyclerViewAdapter<
         }
     }
 
-    public Observable<ClickedItemModel<DomainModel>> observeItemClick(){
+    public Observable<ClickedItemModel<DomainModel>> observeItemClick() {
         return itemClickSubject;
+    }
+
+    public Observable<Integer> lastViewPositionObserver() {
+        return lastViewPosition;
     }
 }

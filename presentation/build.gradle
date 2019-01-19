@@ -46,6 +46,13 @@ dependencies {
     implementation "com.google.dagger:dagger:$daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
 
+//     Paging
+    implementation group: 'android.arch.paging', name: 'runtime', version: '1.0.1'
+    implementation group: 'android.arch.paging', name: 'common', version: '1.0.1'
+    implementation group: 'android.arch.paging', name: 'rxjava2', version: '1.0.1'
+//    implementation "android.arch.paging:runtime:1.0.1"
+
+
     implementation project(path: ':data')
 
 }
