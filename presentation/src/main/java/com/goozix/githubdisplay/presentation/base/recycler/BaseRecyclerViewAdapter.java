@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
@@ -22,7 +23,7 @@ public abstract class BaseRecyclerViewAdapter<
     private List<Entity> items = new ArrayList<>();
     protected boolean isItemClickedEnabled = true;
     private PublishSubject<ClickedItemModel<DomainModel>> itemClickSubject = PublishSubject.create();
-    private PublishSubject<Integer> lastViewPosition=PublishSubject.create();
+    private BehaviorSubject<Integer> lastViewPosition = BehaviorSubject.create();
 
     @Override
     public void onBindViewHolder(@NonNull BaseItemViewHolder<Entity, VM, ?> holder, int position) {
@@ -93,9 +94,13 @@ public abstract class BaseRecyclerViewAdapter<
                     holder.getViewModel().onItemClick();
                 }
             });
-            Log.d("poz", "position " + holder.getAdapterPosition());
+            Log.d("poz", "position view 1 " + holder.getAdapterPosition());
+
         }
-        lastViewPosition.onNext(holder.getAdapterPosition());
+        lastViewPosition.onNext(
+                holder.getAdapterPosition()
+        );
+
     }
 
     @Override

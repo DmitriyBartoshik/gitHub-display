@@ -2,6 +2,7 @@ package com.goozix.data.net;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.goozix.data.entity.response.UserInfoResponse;
 import com.goozix.data.entity.response.UserResponse;
 
 import java.util.List;
@@ -51,15 +52,15 @@ public class RestService {
         errorParserTransformer = new ErrorParserTransformer(gson);
     }
 
-    public Observable<List<UserResponse>> getUserList() {
+    public Observable<List<UserResponse>> getUserList(int USER_PER_PAGE, int userId) {
         return restApi
-                .getUserList()
+                .getUserList(USER_PER_PAGE,userId)
                 .compose(errorParserTransformer.<List<UserResponse>, Throwable>parseHttpError());
     }
 
-    public Observable<UserResponse> getUser(String login) {
+    public Observable<UserInfoResponse> getUser(String login) {
         return restApi
                 .getUser(login)
-                .compose(errorParserTransformer.<UserResponse, Throwable>parseHttpError());
+                .compose(errorParserTransformer.<UserInfoResponse, Throwable>parseHttpError());
     }
 }

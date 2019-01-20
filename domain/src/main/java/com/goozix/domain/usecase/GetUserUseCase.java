@@ -1,6 +1,6 @@
 package com.goozix.domain.usecase;
 
-import com.goozix.domain.entity.User;
+import com.goozix.domain.entity.UserInfo;
 import com.goozix.domain.executors.PostExecutionThread;
 import com.goozix.domain.repository.UserRepository;
 import com.goozix.domain.usecase.base.BaseUseCase;
@@ -19,7 +19,7 @@ public class GetUserUseCase extends BaseUseCase {
         this.userRepository = userRepository;
     }
 
-    public Observable<User> getUser(String login) {
+    public Observable<UserInfo> getUser(String login) {
         return userRepository
                 .getUser(login)
                 .subscribeOn(executionThread)

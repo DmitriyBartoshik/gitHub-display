@@ -10,6 +10,8 @@ import com.goozix.githubdisplay.presentation.base.BaseViewModel;
 import com.goozix.githubdisplay.presentation.base.recycler.ClickedItemModel;
 import com.goozix.githubdisplay.presentation.screen.list.item.user.UserListAdapter;
 
+import org.reactivestreams.Subscription;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -18,9 +20,11 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel> {
+    public static final int USER_PER_PAGE = 7;
     public UserListAdapter adapter = new UserListAdapter();
-    public int pageCount;
-    public int size=29;
+    int lastUserId = 0;
+    int page = 0;
+    boolean isAvailableRequest = true;
 
     @Inject
     public GetListUserUseCase listUserUseCase;
@@ -33,20 +37,26 @@ public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel
     public UserListViewModel() {
         getUserList();
         adapterClickObserver();
-//        lastViewObserver();
+        lastViewOnAttachObserver();
     }
 
     public void getUserList() {
-        listUserUseCase.getUserList().subscribe(new Observer<List<User>>() {
+        listUserUseCase.getUserList(USER_PER_PAGE, lastUserId).subscribe(new Observer<List<User>>() {
             @Override
             public void onSubscribe(Disposable d) {
+                getCompositeDisposable().add(d);
             }
 
             @Override
             public void onNext(List<User> users) {
                 Log.d("User list", "size " + users.size());
-                adapter.setItems(users);
-                pageCount++;
+                lastUserId = getIdLastUser(users);
+                adapter.addItems(users);
+                Log.d("Last User id", "Last User id " + lastUserId);
+                page++;
+                isAvailableRequest = true;
+                Log.d("isAvailableRequest", "isAvailableRequest " + isAvailableRequest);
+                Log.d("page", "page " + page);
             }
 
             @Override
@@ -61,11 +71,43 @@ public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel
         });
     }
 
+    public void lastViewOnAttachObserver() {
+
+        adapter.lastViewPositionObserver().subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.d("lastUserPosition", "integer " + integer);
+                Log.d("isAvailableRequest", "isAvailableRequest " + isAvailableRequest);
+                if (isAvailableRequest && integer == (USER_PER_PAGE * page - 3)) {
+                    getUserList();
+                    isAvailableRequest = false;
+                }
+
+                Log.d("isAvailableRequest", "isAvailableRequest " + isAvailableRequest);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d("lastUserPosition", "integer onComplete ");
+            }
+        });
+    }
+
     public void adapterClickObserver() {
         adapter.observeItemClick().subscribe(new Observer<ClickedItemModel<DomainModel>>() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                getCompositeDisposable().add(d);
             }
 
             @Override
@@ -86,31 +128,8 @@ public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel
         });
     }
 
-    public void lastViewObserver() {
-        adapter.lastViewPositionObserver().subscribe(new Observer<Integer>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(Integer integer) {
-                Log.d("Observer", "+1 "+ integer);
-                if (integer==size){
-                    size=size+20;
-                    getUserList();
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
+    public int getIdLastUser(List<User> users) {
+        User lastUsers = users.get(users.size() - 1);
+        return lastUsers.getId();
     }
 }

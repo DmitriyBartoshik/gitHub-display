@@ -21,9 +21,9 @@ public class GetListUserUseCase extends BaseUseCase {
         this.userRepository= userRepository;
     }
 
-    public Observable<List<User>> getUserList() {
+    public Observable<List<User>> getUserList(int USER_PER_PAGE,int userId) {
         return  userRepository
-                .getUserList()
+                .getUserList(USER_PER_PAGE,userId)
                 .subscribeOn(executionThread)
                 .observeOn(postExecutionThread);
     }

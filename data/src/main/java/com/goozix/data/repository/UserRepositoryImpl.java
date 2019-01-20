@@ -1,12 +1,13 @@
 package com.goozix.data.repository;
 
 import com.goozix.data.entity.response.UserResponse;
+import com.goozix.data.entity.response.UserInfoResponse;
 import com.goozix.data.entity.tranformer.ToDomainTransformer;
 import com.goozix.data.net.RestService;
 import com.goozix.domain.entity.User;
+import com.goozix.domain.entity.UserInfo;
 import com.goozix.domain.repository.UserRepository;
 
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +25,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Observable<List<User>> getUserList() {
+    public Observable<List<User>> getUserList(int USER_PER_PAGE, int userId) {
         return restService
-                .getUserList()
-                .map(new Function<List<UserResponse>, List<User>>() {
+                .getUserList(USER_PER_PAGE, userId)
+                .map(new Function<List<UserResponse>,List<User>>() {
                     @Override
                     public List<User> apply(List<UserResponse> userResponses) throws Exception {
 
@@ -42,13 +43,13 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Observable<User> getUser(String login) {
+    public Observable<UserInfo> getUser(String login) {
         return restService
                 .getUser(login)
-                .map(new Function<UserResponse, User>() {
+                .map(new Function<UserInfoResponse, UserInfo>() {
                     @Override
-                    public User apply(UserResponse userResponse) throws Exception {
-                        return ToDomainTransformer.getInstance().userTransformer(userResponse);
+                    public UserInfo apply(UserInfoResponse userInfoResponse) throws Exception {
+                        return ToDomainTransformer.getInstance().userInfoTransformer(userInfoResponse);
                     }
                 });
     }

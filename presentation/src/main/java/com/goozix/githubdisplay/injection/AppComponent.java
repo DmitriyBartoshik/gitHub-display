@@ -1,7 +1,7 @@
 package com.goozix.githubdisplay.injection;
 
 import com.goozix.githubdisplay.presentation.screen.list.UserListViewModel;
-import com.goozix.githubdisplay.presentation.screen.single.UserViewModel;
+import com.goozix.githubdisplay.presentation.screen.single.UserInfoViewModel;
 
 import javax.inject.Singleton;
 
@@ -11,6 +11,6 @@ import dagger.Component;
 @Singleton
 public interface AppComponent {
     void runInject(UserListViewModel userListViewModel);
-    void runInject(UserViewModel userListViewModel);
+    void runInject(UserInfoViewModel userListViewModel);
 
 }
