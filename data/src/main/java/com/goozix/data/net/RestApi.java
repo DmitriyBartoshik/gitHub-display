@@ -1,5 +1,6 @@
 package com.goozix.data.net;
 
+import com.goozix.data.entity.response.OrganizationResponse;
 import com.goozix.data.entity.response.UserResponse;
 import com.goozix.data.entity.response.UserInfoResponse;
 
@@ -18,4 +19,7 @@ public interface RestApi {
 
     @GET("users/{login}")
     Observable<UserInfoResponse> getUser(@Path("login") String login);
+
+    @GET("users/{login}/orgs")
+    Observable<List<OrganizationResponse>> getUserOrganization(@Path("login") String login);
 }

@@ -1,9 +1,11 @@
 package com.goozix.data.repository;
 
+import com.goozix.data.entity.response.OrganizationResponse;
 import com.goozix.data.entity.response.UserResponse;
 import com.goozix.data.entity.response.UserInfoResponse;
 import com.goozix.data.entity.tranformer.ToDomainTransformer;
 import com.goozix.data.net.RestService;
+import com.goozix.domain.entity.Organization;
 import com.goozix.domain.entity.User;
 import com.goozix.domain.entity.UserInfo;
 import com.goozix.domain.repository.UserRepository;
@@ -28,7 +30,7 @@ public class UserRepositoryImpl implements UserRepository {
     public Observable<List<User>> getUserList(int USER_PER_PAGE, int userId) {
         return restService
                 .getUserList(USER_PER_PAGE, userId)
-                .map(new Function<List<UserResponse>,List<User>>() {
+                .map(new Function<List<UserResponse>, List<User>>() {
                     @Override
                     public List<User> apply(List<UserResponse> userResponses) throws Exception {
 
@@ -53,4 +55,22 @@ public class UserRepositoryImpl implements UserRepository {
                     }
                 });
     }
+
+    @Override
+    public Observable<List<Organization>> getUserOrganization(String login) {
+        return restService.
+                getUserOrganization(login)
+                .map(new Function<List<OrganizationResponse>, List<Organization>>() {
+                    @Override
+                    public List<Organization> apply(List<OrganizationResponse> organizationResponses) throws Exception {
+                        List<Organization> organizations = new ArrayList<>();
+                        for (OrganizationResponse organizationResponse : organizationResponses) {
+                            Organization organization = ToDomainTransformer.getInstance().organizationTransformer(organizationResponse);
+                            organizations.add(organization);
+                        }
+                        return organizations;
+                    }
+                });
+    }
 }
+

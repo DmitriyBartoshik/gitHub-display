@@ -6,10 +6,14 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.goozix.domain.entity.DomainModel;
+import com.goozix.domain.entity.Organization;
 import com.goozix.domain.entity.UserInfo;
+import com.goozix.domain.usecase.GetUserOrganizationUseCase;
 import com.goozix.domain.usecase.GetUserUseCase;
 import com.goozix.githubdisplay.app.App;
 import com.goozix.githubdisplay.presentation.base.BaseViewModel;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -20,13 +24,18 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
     public ObservableField<String> avatarUrl = new ObservableField<>("");
     public ObservableField<String> name = new ObservableField<>("");
     public ObservableField<String> email = new ObservableField<>("");
-    public ObservableField<String> company = new ObservableField<>("");
+    public ObservableField<String> organizations = new ObservableField<>("");
     public ObservableField<String> following = new ObservableField<>("");
     public ObservableField<String> followers = new ObservableField<>("");
     public ObservableField<String> createdAt = new ObservableField<>("");
 
+    public String login;
+
     @Inject
     public GetUserUseCase userUseCase;
+
+    @Inject
+    public GetUserOrganizationUseCase userOrganizationUseCase;
 
     @Override
     protected void runInject() {
@@ -39,7 +48,7 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
 
     }
 
-    public void getUser(String login) {
+    public void getUserInfo(String login) {
         userUseCase
                 .getUser(login)
                 .subscribe(new Observer<UserInfo>() {
@@ -50,9 +59,9 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
 
                     @Override
                     public void onNext(UserInfo userInfo) {
-                       setUserInfo(userInfo);
+                        setUserInfo(userInfo);
                         Log.d("get User", "Get user work!!!!!!!!! ");
-                        Log.d("get User", "Get user work!!!!!!!!! "+ userInfo.getAvatarUrl());
+                        Log.d("get User", "Get user work!!!!!!!!! " + userInfo.getAvatarUrl());
                     }
 
                     @Override
@@ -67,13 +76,52 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
                 });
     }
 
-    public void setUserInfo(UserInfo userInfo){
+    public void getUserOrganization(String login) {
+        userOrganizationUseCase
+                .getUserOrganization(login)
+                .subscribe(new Observer<List<Organization>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<Organization> organizations) {
+                        Log.d("org", "organization " + organizations.size());
+                        setUserOrganization(organizations);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Error get user", "organization get error !!!!!!!!!!!!! " + e.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        getUserOrganization(userInfo.getLogin());
         avatarUrl.set(userInfo.getAvatarUrl());
         name.set(userInfo.getName());
         email.set(userInfo.getEmail());
-        company.set(userInfo.getCompany());
         following.set(userInfo.getFollowing().toString());
         followers.set(userInfo.getFollowers().toString());
         createdAt.set(userInfo.getCreatedAt());
+    }
+
+    public void setUserOrganization(List<Organization> organizationList) {
+        if (!organizationList.isEmpty()) {
+
+            StringBuilder orgs = new StringBuilder();
+            for (Organization organization : organizationList) {
+                orgs.append(organization.getLogin());
+                orgs.append(" ");
+            }
+            organizations.set(orgs.toString());
+        }
     }
 }

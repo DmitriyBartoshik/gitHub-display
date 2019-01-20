@@ -3,7 +3,9 @@ package com.goozix.data.net;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.goozix.data.entity.response.UserInfoResponse;
+import com.goozix.data.entity.response.OrganizationResponse;
 import com.goozix.data.entity.response.UserResponse;
+import com.goozix.domain.entity.Organization;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -54,7 +56,7 @@ public class RestService {
 
     public Observable<List<UserResponse>> getUserList(int USER_PER_PAGE, int userId) {
         return restApi
-                .getUserList(USER_PER_PAGE,userId)
+                .getUserList(USER_PER_PAGE, userId)
                 .compose(errorParserTransformer.<List<UserResponse>, Throwable>parseHttpError());
     }
 
@@ -62,5 +64,11 @@ public class RestService {
         return restApi
                 .getUser(login)
                 .compose(errorParserTransformer.<UserInfoResponse, Throwable>parseHttpError());
+    }
+
+    public Observable<List<OrganizationResponse>> getUserOrganization(String login) {
+        return restApi
+                .getUserOrganization(login)
+                .compose(errorParserTransformer.<List<OrganizationResponse>, Throwable>parseHttpError());
     }
 }

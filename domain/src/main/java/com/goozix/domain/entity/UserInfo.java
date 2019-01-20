@@ -1,15 +1,19 @@
 package com.goozix.domain.entity;
 
 public class UserInfo {
+    private String login;
     private String avatarUrl;
     private String name;
     private String email;
-    private String company;
     private Integer following;
     private Integer followers;
     private String createdAt;
 
     public UserInfo() {
+    }
+
+    public String getLogin() {
+        return login;
     }
 
     public String getAvatarUrl() {
@@ -24,10 +28,6 @@ public class UserInfo {
         return email;
     }
 
-    public String getCompany() {
-        return company;
-    }
-
     public Integer getFollowing() {
         return following;
     }
@@ -40,6 +40,10 @@ public class UserInfo {
         return createdAt;
     }
 
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
@@ -50,10 +54,6 @@ public class UserInfo {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
     }
 
     public void setFollowing(Integer following) {

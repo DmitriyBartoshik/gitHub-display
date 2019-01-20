@@ -1,7 +1,9 @@
 package com.goozix.data.entity.tranformer;
 
+import com.goozix.data.entity.response.OrganizationResponse;
 import com.goozix.data.entity.response.UserResponse;
 import com.goozix.data.entity.response.UserInfoResponse;
+import com.goozix.domain.entity.Organization;
 import com.goozix.domain.entity.User;
 import com.goozix.domain.entity.UserInfo;
 
@@ -28,13 +30,19 @@ public class ToDomainTransformer {
 
     public UserInfo userInfoTransformer(UserInfoResponse userInfoResponse) {
         UserInfo userInfo = new UserInfo();
+        userInfo.setLogin(userInfoResponse.getLogin());
         userInfo.setAvatarUrl(userInfoResponse.getAvatarUrl());
         userInfo.setName(userInfoResponse.getName());
         userInfo.setEmail(userInfoResponse.getEmail());
-        userInfo.setCompany(userInfoResponse.getCompany());
         userInfo.setFollowing(userInfoResponse.getFollowing());
         userInfo.setFollowers(userInfoResponse.getFollowers());
         userInfo.setCreatedAt(userInfoResponse.getCreatedAt());
         return userInfo;
+    }
+
+    public Organization organizationTransformer(OrganizationResponse organizationResponse){
+        Organization organization=new Organization();
+        organization.setLogin(organizationResponse.getLogin());
+        return organization;
     }
 }

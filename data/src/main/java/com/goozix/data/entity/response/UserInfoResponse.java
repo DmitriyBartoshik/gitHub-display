@@ -3,6 +3,8 @@ package com.goozix.data.entity.response;
 import com.google.gson.annotations.SerializedName;
 
 public class UserInfoResponse implements DataModel {
+    @SerializedName("login")
+    private String login;
 
     @SerializedName("avatar_url")
     private String avatarUrl;
@@ -12,9 +14,6 @@ public class UserInfoResponse implements DataModel {
 
     @SerializedName("email")
     private String email;
-
-    @SerializedName("company")
-    private String company;
 
     @SerializedName("following")
     private Integer following;
@@ -28,6 +27,9 @@ public class UserInfoResponse implements DataModel {
     public UserInfoResponse() {
     }
 
+    public String getLogin() {
+        return login;
+    }
     public String getAvatarUrl() {
         return avatarUrl;
     }
@@ -38,10 +40,6 @@ public class UserInfoResponse implements DataModel {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getCompany() {
-        return company;
     }
 
     public Integer getFollowing() {

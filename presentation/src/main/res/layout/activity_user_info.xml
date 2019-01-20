@@ -46,12 +46,6 @@
             android:text="@{viewModel.email}"
             android:textSize="17sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@{viewModel.company}"
-            android:textSize="17sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -72,6 +66,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@{viewModel.createdAt}"
+            android:textSize="17sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{viewModel.organizations}"
             android:textSize="17sp" />
     </LinearLayout>
 </layout>
