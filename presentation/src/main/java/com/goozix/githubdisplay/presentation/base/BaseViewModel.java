@@ -1,6 +1,7 @@
 package com.goozix.githubdisplay.presentation.base;
 
 import android.arch.lifecycle.ViewModel;
+import android.databinding.ObservableBoolean;
 
 import com.goozix.domain.entity.DomainModel;
 
@@ -9,6 +10,9 @@ import io.reactivex.disposables.CompositeDisposable;
 public abstract class BaseViewModel<R extends BaseRouter, T extends DomainModel> extends ViewModel {
 
     private CompositeDisposable compositeDisposable;
+    public ObservableBoolean progressBar = new ObservableBoolean(true);
+    public ObservableBoolean emailContainer = new ObservableBoolean(true);
+    public ObservableBoolean organizationContainer = new ObservableBoolean(true);
 
     protected R router;
 
@@ -33,7 +37,7 @@ public abstract class BaseViewModel<R extends BaseRouter, T extends DomainModel>
     }
 
     public CompositeDisposable getCompositeDisposable() {
-        if(compositeDisposable == null) {
+        if (compositeDisposable == null) {
             compositeDisposable = new CompositeDisposable();
         }
 
@@ -43,9 +47,23 @@ public abstract class BaseViewModel<R extends BaseRouter, T extends DomainModel>
     @Override
     protected void onCleared() {
         super.onCleared();
-        if(compositeDisposable != null
+        if (compositeDisposable != null
                 && !compositeDisposable.isDisposed()) {
             compositeDisposable.dispose();
         }
+    }
+
+    public void showProgressBar() {
+        progressBar.set(true);
+    }
+
+    public void hideProgressBar() {
+        progressBar.set(false);
+    }
+    public void hideEmailContainer() {
+        emailContainer.set(false);
+    }
+    public void hideOrganizationContainer() {
+        organizationContainer.set(false);
     }
 }

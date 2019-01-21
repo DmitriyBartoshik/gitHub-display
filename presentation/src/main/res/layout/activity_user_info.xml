@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -11,67 +10,149 @@
             type="com.goozix.githubdisplay.presentation.screen.single.UserInfoViewModel" />
     </data>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/blue_effect_border"
             android:orientation="vertical">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/Toolbar" />
+
 
             <ImageView
                 android:id="@+id/image15"
                 android:layout_width="160dp"
                 android:layout_height="160dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 app:avatarUrl="@{viewModel.avatarUrl}" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
+                <TextView
+                    style="@style/BaseText"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/name" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@{viewModel.name}"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="17sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:visibility="@{viewModel.emailContainer}">
+
+                <TextView
+                    style="@style/BaseText"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/email" />
+
+                <TextView
+                    style="@style/MediumText"
+                    android:layout_marginLeft="20dp"
+                    android:text="@{viewModel.email}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/BaseText"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/following" />
+
+                <TextView
+                    style="@style/MediumText"
+                    android:layout_marginLeft="20dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:text="@{viewModel.following}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/BaseText"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/followers" />
+
+                <TextView
+                    style="@style/MediumText"
+                    android:layout_marginLeft="20dp"
+                    android:text="@{viewModel.followers}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:visibility="@{viewModel.organizationContainer}">
+
+                <TextView
+                    style="@style/BaseText"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/organizations" />
+
+                <TextView
+                    style="@style/MediumText"
+                    android:layout_marginLeft="20dp"
+                    android:text="@{viewModel.organizations}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/BaseText"
+                    android:layout_marginLeft="20dp"
+                    android:text="@string/created" />
+
+                <TextView
+                    style="@style/MediumText"
+                    android:layout_marginLeft="20dp"
+                    android:text="@{viewModel.createdAt}" />
+            </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@{viewModel.name}"
-            android:textSize="17sp" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@{viewModel.email}"
-            android:textSize="17sp" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@{viewModel.following}"
-            android:textSize="17sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@{viewModel.followers}"
-            android:textSize="17sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@{viewModel.createdAt}"
-            android:textSize="17sp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@{viewModel.organizations}"
-            android:textSize="17sp" />
-    </LinearLayout>
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="@{viewModel.progressBar}" />
+        </FrameLayout>
+    </FrameLayout>
 </layout>

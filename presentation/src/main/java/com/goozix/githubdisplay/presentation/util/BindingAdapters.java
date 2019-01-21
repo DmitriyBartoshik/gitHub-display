@@ -1,5 +1,6 @@
 package com.goozix.githubdisplay.presentation.util;
 
+import android.view.View;
 import android.widget.ImageView;
 import android.databinding.BindingAdapter;
 
@@ -14,5 +15,10 @@ public class BindingAdapters {
                 .load(url)
                 .apply(RequestOptions.circleCropTransform())
                 .into(imageView);
+    }
+
+    @BindingAdapter("android:visibility")
+    public static void setVisibility(View view, Boolean isVisible) {
+        view.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 }

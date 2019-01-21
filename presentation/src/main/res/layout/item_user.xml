@@ -14,34 +14,46 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/blue_effect_border"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/image7"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="30dp"
             app:avatarUrl="@{viewModel.avatarUrl}" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/MediumText"
                 android:layout_gravity="center"
-                android:text="@{viewModel.login}"
-                android:textSize="17sp" />
+                android:fontFamily="@font/bradobrei"
+                android:text="@{viewModel.login}" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@{viewModel.id}"
-                android:textSize="17sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/BaseText"
+                    android:text="@string/id" />
+
+                <TextView
+                    style="@style/MediumText"
+                    android:layout_marginLeft="5dp"
+                    android:text="@{viewModel.id}" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </layout>

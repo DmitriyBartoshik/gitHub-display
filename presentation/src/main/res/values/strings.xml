@@ -5,4 +5,20 @@
     <string name="error_server_not_available">Сервер не доступен</string>
     <string name="error_server">Серверная ошибка</string>
     <string name="error">Непредвиденная ошибка</string>
+
+    <string name="name">name:</string>
+    <string name="email">email:</string>
+    <string name="following">following:</string>
+    <string name="followers">followers:</string>
+    <string name="organizations">organizations:</string>
+    <string name="created">created:</string>
+    <string name="id">id:</string>
+
+
+
+
+
+
+
+
 </resources>

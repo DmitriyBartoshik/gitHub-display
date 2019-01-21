@@ -38,8 +38,8 @@ public class UserInfoActivity extends BaseMvvmActivity<UserInfoViewModel,
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setSupportActionBar(binding.toolbar);
         String login = getIntent().getExtras().getString(EXTRA_USER_LOGIN);
-
         viewModel.getUserInfo(login);
     }
 }

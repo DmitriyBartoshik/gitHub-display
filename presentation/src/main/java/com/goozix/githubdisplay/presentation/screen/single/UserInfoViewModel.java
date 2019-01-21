@@ -29,8 +29,6 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
     public ObservableField<String> followers = new ObservableField<>("");
     public ObservableField<String> createdAt = new ObservableField<>("");
 
-    public String login;
-
     @Inject
     public GetUserUseCase userUseCase;
 
@@ -45,10 +43,10 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
     }
 
     public UserInfoViewModel() {
-
     }
 
     public void getUserInfo(String login) {
+        showProgressBar();
         userUseCase
                 .getUser(login)
                 .subscribe(new Observer<UserInfo>() {
@@ -89,6 +87,7 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
                     public void onNext(List<Organization> organizations) {
                         Log.d("org", "organization " + organizations.size());
                         setUserOrganization(organizations);
+                        hideProgressBar();
                     }
 
                     @Override
@@ -111,6 +110,9 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
         following.set(userInfo.getFollowing().toString());
         followers.set(userInfo.getFollowers().toString());
         createdAt.set(userInfo.getCreatedAt());
+
+        if (email.get()==null)
+            hideEmailContainer();
     }
 
     public void setUserOrganization(List<Organization> organizationList) {
@@ -122,6 +124,8 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
                 orgs.append(" ");
             }
             organizations.set(orgs.toString());
-        }
+        } else hideOrganizationContainer();
+
+
     }
 }

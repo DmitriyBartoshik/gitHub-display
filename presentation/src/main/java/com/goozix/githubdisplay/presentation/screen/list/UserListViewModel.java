@@ -1,6 +1,9 @@
 package com.goozix.githubdisplay.presentation.screen.list;
 
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableInt;
 import android.util.Log;
+import android.view.View;
 
 import com.goozix.domain.entity.DomainModel;
 import com.goozix.domain.entity.User;
@@ -20,7 +23,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
 public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel> {
-    public static final int USER_PER_PAGE = 7;
+    public static final int USER_PER_PAGE = 30;
     public UserListAdapter adapter = new UserListAdapter();
     int lastUserId = 0;
     int page = 0;
@@ -35,12 +38,14 @@ public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel
     }
 
     public UserListViewModel() {
+        showProgressBar();
         getUserList();
         adapterClickObserver();
         lastViewOnAttachObserver();
     }
 
     public void getUserList() {
+
         listUserUseCase.getUserList(USER_PER_PAGE, lastUserId).subscribe(new Observer<List<User>>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -57,6 +62,7 @@ public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel
                 isAvailableRequest = true;
                 Log.d("isAvailableRequest", "isAvailableRequest " + isAvailableRequest);
                 Log.d("page", "page " + page);
+                hideProgressBar();
             }
 
             @Override
@@ -83,12 +89,13 @@ public class UserListViewModel extends BaseViewModel<UserListRouter, DomainModel
             public void onNext(Integer integer) {
                 Log.d("lastUserPosition", "integer " + integer);
                 Log.d("isAvailableRequest", "isAvailableRequest " + isAvailableRequest);
-                if (isAvailableRequest && integer == (USER_PER_PAGE * page - 3)) {
+                if (isAvailableRequest && integer == (USER_PER_PAGE * page-1)) {
                     getUserList();
                     isAvailableRequest = false;
                 }
 
                 Log.d("isAvailableRequest", "isAvailableRequest " + isAvailableRequest);
+                hideProgressBar();
             }
 
             @Override
