@@ -27,9 +27,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Observable<List<User>> getUserList(int USER_PER_PAGE, int userId) {
+    public Observable<List<User>> getUserList(int userId) {
         return restService
-                .getUserList(USER_PER_PAGE, userId)
+                .getUserList(userId)
                 .map(new Function<List<UserResponse>, List<User>>() {
                     @Override
                     public List<User> apply(List<UserResponse> userResponses) throws Exception {

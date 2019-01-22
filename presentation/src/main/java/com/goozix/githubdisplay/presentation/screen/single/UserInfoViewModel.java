@@ -1,9 +1,6 @@
 package com.goozix.githubdisplay.presentation.screen.single;
 
-import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
-import android.util.Log;
-import android.widget.ImageView;
 
 import com.goozix.domain.entity.DomainModel;
 import com.goozix.domain.entity.Organization;
@@ -13,6 +10,9 @@ import com.goozix.domain.usecase.GetUserUseCase;
 import com.goozix.githubdisplay.app.App;
 import com.goozix.githubdisplay.presentation.base.BaseViewModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -58,18 +58,14 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
                     @Override
                     public void onNext(UserInfo userInfo) {
                         setUserInfo(userInfo);
-                        Log.d("get User", "Get user work!!!!!!!!! ");
-                        Log.d("get User", "Get user work!!!!!!!!! " + userInfo.getAvatarUrl());
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("Error get user", "Error get user " + e.toString());
                     }
 
                     @Override
                     public void onComplete() {
-
                     }
                 });
     }
@@ -85,14 +81,11 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
 
                     @Override
                     public void onNext(List<Organization> organizations) {
-                        Log.d("org", "organization " + organizations.size());
                         setUserOrganization(organizations);
-                        hideProgressBar();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("Error get user", "organization get error !!!!!!!!!!!!! " + e.toString());
                     }
 
                     @Override
@@ -109,9 +102,9 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
         email.set(userInfo.getEmail());
         following.set(userInfo.getFollowing().toString());
         followers.set(userInfo.getFollowers().toString());
-        createdAt.set(userInfo.getCreatedAt());
+        createdAt.set(convertDate(userInfo.getCreatedAt()));
 
-        if (email.get()==null)
+        if (email.get() == null)
             hideEmailContainer();
     }
 
@@ -125,7 +118,23 @@ public class UserInfoViewModel extends BaseViewModel<UserInfoRouter, DomainModel
             }
             organizations.set(orgs.toString());
         } else hideOrganizationContainer();
-
-
+        hideProgressBar();
     }
+
+    public String convertDate(String stringDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        try {
+            date = dateFormat.parse(stringDate);
+            return dateFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public void onClickBack() {
+        router.goBack();
+    }
+
 }

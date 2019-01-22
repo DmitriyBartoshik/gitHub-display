@@ -22,7 +22,15 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                style="@style/Toolbar" />
+                style="@style/Toolbar">
+
+                <ImageView
+                    android:id="@+id/your_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_back"
+                    android:onClick="@{() -> viewModel.onClickBack()}"/>
+            </android.support.v7.widget.Toolbar>
 
 
             <ImageView

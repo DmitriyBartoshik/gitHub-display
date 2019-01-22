@@ -45,6 +45,8 @@ dependencies {
     implementation "com.google.dagger:dagger:$daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
 
+    implementation'com.github.orangegangsters:swipy:1.2.3@aar'
+
     implementation project(path: ':data')
 
 }

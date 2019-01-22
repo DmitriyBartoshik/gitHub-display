@@ -14,7 +14,6 @@ import retrofit2.http.Query;
 public interface RestApi {
     @GET("users")
     Observable<List<UserResponse>> getUserList(
-            @Query("per_page") int USER_PER_PAGE,
             @Query("since") int userID);
 
     @GET("users/{login}")

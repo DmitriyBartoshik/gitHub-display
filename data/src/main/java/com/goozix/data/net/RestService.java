@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.goozix.data.entity.response.UserInfoResponse;
 import com.goozix.data.entity.response.OrganizationResponse;
 import com.goozix.data.entity.response.UserResponse;
-import com.goozix.domain.entity.Organization;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -54,9 +53,9 @@ public class RestService {
         errorParserTransformer = new ErrorParserTransformer(gson);
     }
 
-    public Observable<List<UserResponse>> getUserList(int USER_PER_PAGE, int userId) {
+    public Observable<List<UserResponse>> getUserList(int userId) {
         return restApi
-                .getUserList(USER_PER_PAGE, userId)
+                .getUserList(userId)
                 .compose(errorParserTransformer.<List<UserResponse>, Throwable>parseHttpError());
     }
 

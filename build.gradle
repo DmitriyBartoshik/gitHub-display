@@ -36,7 +36,6 @@ ext {
     constraintVersion = '1.1.2'
     glideVersion = '4.8.0'
 
-
     //Rx
     rxJavaVersion = '2.1.16'
     rxAndroidVersion = '2.0.2'
@@ -54,6 +53,5 @@ ext {
     //Network
     retrofitVersion = '2.4.0'
     okHttpVersion = '3.11.0'
-
 }
 

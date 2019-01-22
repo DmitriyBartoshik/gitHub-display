@@ -2,7 +2,6 @@ package com.goozix.githubdisplay.presentation.base.recycler;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 
 import com.goozix.domain.entity.DomainModel;
@@ -11,9 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
 
 public abstract class BaseRecyclerViewAdapter<
         Entity extends DomainModel,
@@ -23,7 +20,6 @@ public abstract class BaseRecyclerViewAdapter<
     private List<Entity> items = new ArrayList<>();
     protected boolean isItemClickedEnabled = true;
     private PublishSubject<ClickedItemModel<DomainModel>> itemClickSubject = PublishSubject.create();
-    private BehaviorSubject<Integer> lastViewPosition = BehaviorSubject.create();
 
     @Override
     public void onBindViewHolder(@NonNull BaseItemViewHolder<Entity, VM, ?> holder, int position) {
@@ -74,7 +70,8 @@ public abstract class BaseRecyclerViewAdapter<
 
     public void addItems(List<Entity> items) {
         this.items.addAll(items);
-        notifyItemRangeInserted(items.size() - 1, items.size());
+//        notifyItemRangeInserted(items.size() - 1, items.size());
+        notifyDataSetChanged();
     }
 
     public void clear() {
@@ -94,13 +91,7 @@ public abstract class BaseRecyclerViewAdapter<
                     holder.getViewModel().onItemClick();
                 }
             });
-            Log.d("poz", "position view 1 " + holder.getAdapterPosition());
-
         }
-        lastViewPosition.onNext(
-                holder.getAdapterPosition()
-        );
-
     }
 
     @Override
@@ -113,9 +104,5 @@ public abstract class BaseRecyclerViewAdapter<
 
     public Observable<ClickedItemModel<DomainModel>> observeItemClick() {
         return itemClickSubject;
-    }
-
-    public Observable<Integer> lastViewPositionObserver() {
-        return lastViewPosition;
     }
 }

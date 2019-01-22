@@ -9,7 +9,7 @@ import java.util.List;
 import io.reactivex.Observable;
 
 public interface UserRepository {
-    Observable<List<User>> getUserList(int USER_PER_PAGE, int userId);
+    Observable<List<User>> getUserList(int userId);
 
     Observable<UserInfo> getUser(String login);
 
